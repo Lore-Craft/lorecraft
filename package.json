@@ -1,0 +1,33 @@
+{
+  "name": "lorecraft-api",
+  "version": "1.0.0",
+  "description": "### About An app designed and created by:",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lore-Craft/lorecraft-api.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lore-Craft/lorecraft-api/issues"
+  },
+  "homepage": "https://github.com/Lore-Craft/lorecraft-api#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.0.1",
+    "mongoose": "^7.5.0",
+    "nodemon": "^3.0.1"
+  }
+}

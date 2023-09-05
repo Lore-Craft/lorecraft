@@ -43,6 +43,27 @@ We feel that it is much nicer to edit a backstory than generate one - we’re le
 
 Data Flow
 ![Domain Model and Data Flow](assets/images/DomainModel.png)
+             +-------------+
+             |   UserModel |
+             +-------------+
+             | userEmail   |
+             |-------------|
+             | characters[]|
+             +------+------+
+                    |
+                    |
+                    |
+           +--------v---------+
+           |  CharacterSchema |
+           +------------------+
+           | charName         |
+           | classType        |
+           | alignment        |
+           | gender           |
+           | imageURL         |
+           | backstory        |
+           +------------------+
+
 
 
 ## Non-Functional Requirements
