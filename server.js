@@ -2,107 +2,74 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-
-// const authorize = require('./auth/authorize.js');
-
-const PORT = process.env.PORT || 3001;
-const MONGODB_URL = process.env.MONGODB_URL;
 const app = express();
-
-const mongoose = require('mongoose');
-const model = require('./CharacterModel');
+const PORT = process.env.PORT;
+const apiKey = process.env.OPENAI_API_KEY;
 
 app.use(cors());
 app.use(express.json());
-// app.use(authorize);
 
+const axios = require('axios');
 
-mongoose.connect(MONGODB_URL);
+// OpenAI API endpoint and payload
+const OPENAI_API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
+const OPENAI_MODEL = 'gpt-3.5-turbo-0613';
 
-app.get('/test', (req, res) => {
-  console.log('testing sucessful!');
-  res.send('Stay tuned for something awesome!');
-});
-
-
-app.get('/books', async (req, res) => {
+// Function to generate a character backstory
+async function generateBackstory(prompt) {
   try {
-    console.log('Finding userEmail: ' + req.user.email);
-    let documents = await BookModel.find({ userEmail : req.user.email });
-    res.json(documents);
-  } catch (e) {
-    console.log('Something went wrong when finding all the books: ', e);
-    res.status(500).send(e);
+    // Request to the OpenAI API endpoint
+    const response = await axios.post(
+      OPENAI_API_ENDPOINT,
+      {
+        model: OPENAI_MODEL,
+        messages: [{ role: 'system', content: 'You are a helpful assistant.' }, { role: 'user', content: prompt }],
+        max_tokens: 150,
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const generatedStory = response.data.choices[0].message.content;
+    return generatedStory;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('An error occurred');
   }
-});
+}
 
-app.post('/books', async(req, res, next) => {
-  let { title, description, status, userEmail } = req.body;
-
-  if (!title) {
-    res.status(400).send('Please submit all information in a JSON query. Failed on title')
-  } else if (!description) {
-    res.status(400).send('Please submit all information in a JSON query. Failed on description')
-  } else if (!status) {
-    res.status(400).send('Please submit all information in a JSON query. Failed on status')
-  }
-
+// Endpoint to generate a character backstory
+app.post('/generate-backstory', async (req, res) => {
   try {
-    let newBook = new BookModel({ title, description, status, userEmail: req.user.email });
-    let document = await newBook.save();
-    console.log('New Book Created, ', document);
-    res.status(201).json(document);
-  } catch (err){
-    res.status(500).send(err);
+    const userInput = req.body;
+
+    const prompt = `Generate a unique backstory for ${userInput.name}, a ${userInput.gender} ${userInput.race} ${userInput.charClass} character with a ${userInput.alignment} alignment in a fantasy setting in a unique place.`;
+
+    const generatedStory = await generateBackstory(prompt);
+    res.json({ generatedStory });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-app.put('/books/:bookID', async(req, res) => {
-  let bookId = req.params.bookID;
-  
-  if (!bookId) {
-    res.status(400).send('Please provide a valid Book Id');
-    return;
-  }
-  console.log('Updating (via PUT) book of id: ' + bookId);
-
+// Endpoint to regenerate a character backstory 
+app.post('/regenerate-backstory', async (req, res) => {
   try {
-    await BookModel.replaceOne({ _id: bookId, userEmail: req.user.email }, req.body);
-    let newBook = await BookModel.findOne({ _id: bookId });
-    res.status(200).json(newBook);
-  } catch (err) {
-    res.status(500).send(err);
-  }
+    const userInput = req.body;
 
+    const prompt = `Generate a different backstory for ${userInput.name}, a ${userInput.gender} ${userInput.race} ${userInput.charClass} character with a ${userInput.alignment} alignment in a fantasy setting in a unique place.`;
 
-});
-
-
-app.delete('/books/:bookID', async (req, res) => {
-  let bookId = req.params.bookID;
-  if (!bookId) {
-    res.status(400).send('Please provide a valid Book Id');
-    return;
-  }
-  console.log('deleting book of id: ' + bookId);
-  try {
-    let result = await BookModel.findOneAndDelete({ _id: bookId, userEmail: req.user.email });
-
-    if (!result) {
-      res.status(404).send('Book ID not found.');
-      return;
-    }
-    console.log('Successfully deleted book with id: ' + bookId);
-    res.status(202).send('Successfully deleted book.');
-
-  } catch (err) {
-    if (err.name === 'CastError') {
-      res.status(400).send('Invalid book ID format');
-    } else {
-      res.status(500).send('Internal Server Error, log as follows: ', err);
-    }
+    const generatedStory = await generateBackstory(prompt);
+    res.json({ generatedStory });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-
-app.listen(PORT, () => console.log(`app v0.1 listening on ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
