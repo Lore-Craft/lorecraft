@@ -37,3 +37,21 @@ Content-Type: application/json
     }
   ]
 }
+
+### Charlie
+POST http://localhost:3001/character
+Content-Type: application/json
+
+{
+  "userEmail": "charlie@example.com",
+  "characters": [
+    {
+      "charName": "ChuckChar1",
+      "classType": "Monk",
+      "alignment": "Evil",
+      "gender": "NB",
+      "imageURL": "https://example.com/chuck.jpg",
+      "backstory": "A darkness gathers..."
+    }
+  ]
+}
