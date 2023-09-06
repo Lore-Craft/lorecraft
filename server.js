@@ -34,7 +34,9 @@ app.post('/character', async (req, res) => {
 app.get('/character', async (req, res) => {
   console.log('getting list of characters.')
   try {
-    const characters = await User.find();
+    console.log('querying')
+    const characters = await User.find({});
+    console.log('result: ', characters)
     res.json(characters);
   } catch (e) {
     res.status(500).send(e);

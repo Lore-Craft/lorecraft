@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const UserModel = require('../UserModel'); // Assuming UserModel is in a separate file
+const UserModel = require('../../UserModel'); // Assuming UserModel is in a separate file
 
 // MongoDB connection URL (replace with your own URL if needed)
 const url = 'mongodb://localhost:27017';
