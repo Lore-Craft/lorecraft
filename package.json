@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "nodemon server.js",
+    "test": "nodemon tests/nosql-debug/test-server.js",
     "dev": "nodemon server.js",
     "start": "node server.js"
   },

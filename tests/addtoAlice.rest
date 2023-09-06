@@ -4,16 +4,12 @@ GET http://localhost:3001/character
 
 PATCH http://localhost:3001/character/alice@example.com
 Content-Type: application/json
-
 {
-  "characters": {
-    "$push": {
-      "charName": "AliceChar2",
-      "classType": "Warrior",
-      "alignment": "Lawful Good",
-      "gender": "Female",
-      "imageURL": "https://example.com/alice2.jpg",
-      "backstory": "Joined a knight's order..."
-    }
-  }
+  "charName": "NewCharacter1",
+  "classType": "Warrior",
+  "alignment": "Lawful Good",
+  "gender": "Male",
+  "imageURL": "character1.jpg",
+  "backstory": "A brave warrior on a quest.",
+  "userEmail": "alice@example.com"
 }

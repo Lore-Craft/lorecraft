@@ -8,16 +8,12 @@ Content-Type: application/json
 
 {
   "userEmail": "alice@example.com",
-  "characters": [
-    {
-      "charName": "AliceChar1",
-      "classType": "Mage",
-      "alignment": "Neutral",
-      "gender": "Female",
-      "imageURL": "https://example.com/alice.jpg",
-      "backstory": "Born in a small village..."
-    }
-  ]
+  "charName": "AliceChar1",
+  "classType": "Mage",
+  "alignment": "Neutral",
+  "gender": "Female",
+  "imageURL": "https://example.com/alice.jpg",
+  "backstory": "Born in a small village..."
 }
 
 ### Bob
@@ -26,14 +22,24 @@ Content-Type: application/json
 
 {
   "userEmail": "bob@example.com",
-  "characters": [
-    {
-      "charName": "BobChar1",
-      "classType": "Warrior",
-      "alignment": "Good",
-      "gender": "Male",
-      "imageURL": "https://example.com/bob.jpg",
-      "backstory": "Raised by wolves..."
-    }
-  ]
+  "charName": "BobChar1",
+  "classType": "Warrior",
+  "alignment": "Good",
+  "gender": "Male",
+  "imageURL": "https://example.com/bob.jpg",
+  "backstory": "Raised by wolves..."
+}
+
+### Charlie
+POST http://localhost:3001/character
+Content-Type: application/json
+
+{
+  "userEmail": "charlie@example.com",
+  "charName": "ChuckChar1",
+  "classType": "Monk",
+  "alignment": "Evil",
+  "gender": "NB",
+  "imageURL": "https://example.com/chuck.jpg",
+  "backstory": "A darkness gathers..."
 }
