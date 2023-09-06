@@ -31,12 +31,21 @@ app.post('/character', async (req, res) => {
 
 
 // Read all Characters
+app.get('/character/:userEmail', async (req, res) => {
+  // console.log('getting list of characters.')
+  const { userEmail } = req.params;
+  try {
+    const characters = await Character.find({ userEmail});
+    res.json(characters);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
 app.get('/character', async (req, res) => {
   // console.log('getting list of characters.')
   try {
-    // console.log('querying')
-    const characters = await Character.find({});
-    // console.log('result: ', characters)
+    const characters = await Character.find({ });
     res.json(characters);
   } catch (e) {
     res.status(500).send(e);
@@ -45,25 +54,26 @@ app.get('/character', async (req, res) => {
 
 // Update a Character
 app.patch('/character/:userEmail', async (req, res) => {
-  const { userEmail } = req.params;
-  console.log('about to change userEmail: ', userEmail);
-  try {
-    const characterData = req.body;
-    characterData.userEmail = userEmail; // Include the user's email
-    const newCharacter = new Character(characterData);
-    const updatedUser = await User.findOneAndUpdate(
-      { userEmail },
-      { $push: { characters: newCharacter } },
-      { new: true }
-    );
-    if (updatedUser) {
-      res.status(200).json(updatedUser);
-    } else {
-      res.status(404).send("User with that email address not found");
-    }
-  } catch (e) {
-    res.status(500).send(e);
-  }
+  res.status(500).send('PATCH no longer supported');
+  // const { userEmail } = req.params;
+  // console.log('about to change userEmail: ', userEmail);
+  // try {
+  //   const characterData = req.body;
+  //   characterData.userEmail = userEmail; // Include the user's email
+  //   const newCharacter = new Character(characterData);
+  //   const updatedUser = await User.findOneAndUpdate(
+  //     { userEmail },
+  //     { $push: { characters: newCharacter } },
+  //     { new: true }
+  //   );
+  //   if (updatedUser) {
+  //     res.status(200).json(updatedUser);
+  //   } else {
+  //     res.status(404).send("User with that email address not found");
+  //   }
+  // } catch (e) {
+  //   res.status(500).send(e);
+  // }
 });
 
 
