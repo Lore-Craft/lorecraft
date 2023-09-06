@@ -1,0 +1,95 @@
+## Create a new character
+POST http://localhost:3001/character
+Content-Type: application/json
+
+{
+  "userEmail": "user2@email.com",
+  "characters": [
+    {
+      "charName": "Derek",
+      "classType": "Rogue",
+      "alignment": "Neutral",
+      "gender": "Male",
+      "imageURL": "https://derek-image.com",
+      "backstory": "A treasure hunter seeking riches."
+    }
+  ]
+}
+
+###
+POST http://localhost:3001/character 
+Content-Type: application/json
+
+{
+  "userEmail": "user12@email.com",
+  "characters": [
+    {
+      "charName": "F",
+      "classType": "P",
+      "alignment": "LG",
+      "gender": "M",
+      "imageURL": "https://placeholder",
+      "backstory": "mm.."
+    }
+  ]
+}
+
+###
+PATCH http://localhost:3001/character/user1@email.com
+Content-Type: application/json
+
+{
+  "characters": [
+    {
+      "charName": "Alice",
+      "classType": "Wizard",
+      "alignment": "Chaotic Neutral",
+      "gender": "Female",
+      "imageURL": "https://alice-image.com",
+      "backstory": "Grew up in a magical forest."
+    }
+  ]
+}
+###
+PATCH http://localhost:3001/character/user1@email.com
+Content-Type: application/json
+
+{
+  "characters": [
+    {
+      "charName": "Bob",
+      "classType": "Ranger",
+      "alignment": "Lawful Good",
+      "gender": "Male",
+      "imageURL": "https://bob-image.com",
+      "backstory": "A guardian of nature."
+    }
+  ]
+}
+
+###
+PATCH http://localhost:3001/character/user1@email.com
+Content-Type: application/json
+
+{
+  "characters": [
+    {
+      "charName": "Catherine",
+      "classType": "Cleric",
+      "alignment": "Neutral Good",
+      "gender": "Female",
+      "imageURL": "https://catherine-image.com",
+      "backstory": "A healer from a small village."
+    }
+  ]
+}
+
+
+###
+## Retrieve all characters
+GET http://localhost:3001/character
+
+###
+### Delete a character
+DELETE http://localhost:3001/character/64f815c439c8a278845c81b0
+
