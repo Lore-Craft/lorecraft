@@ -17,6 +17,6 @@ const UserSchema = new Schema({
   characters: [CharacterSchema]
 });
 
-const CharacterModel = mongoose.model('User', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
 
-module.exports = CharacterModel;
+module.exports = UserModel;
