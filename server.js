@@ -10,7 +10,7 @@ const MONGODB_URL = process.env.MONGODB_URL;
 const app = express();
 
 const mongoose = require('mongoose');
-const model = require('./CharacterModel');
+const User = require('./UserModel');
 
 app.use(cors());
 app.use(express.json());
@@ -25,84 +25,64 @@ app.get('/test', (req, res) => {
 });
 
 
-app.get('/books', async (req, res) => {
+app.listen(PORT, () => console.log(`app v0.1 listening on ${PORT}`));
+
+// Create a new Character
+app.post('/character', async (req, res) => {
   try {
-    console.log('Finding userEmail: ' + req.user.email);
-    let documents = await BookModel.find({ userEmail : req.user.email });
-    res.json(documents);
+    const newCharacter = new User(req.body);
+    const savedCharacter = await newCharacter.save();
+    res.status(201).json(savedCharacter);
   } catch (e) {
-    console.log('Something went wrong when finding all the books: ', e);
     res.status(500).send(e);
   }
 });
 
-app.post('/books', async(req, res, next) => {
-  let { title, description, status, userEmail } = req.body;
-
-  if (!title) {
-    res.status(400).send('Please submit all information in a JSON query. Failed on title')
-  } else if (!description) {
-    res.status(400).send('Please submit all information in a JSON query. Failed on description')
-  } else if (!status) {
-    res.status(400).send('Please submit all information in a JSON query. Failed on status')
-  }
-
+// Read all Characters
+app.get('/character', async (req, res) => {
   try {
-    let newBook = new BookModel({ title, description, status, userEmail: req.user.email });
-    let document = await newBook.save();
-    console.log('New Book Created, ', document);
-    res.status(201).json(document);
-  } catch (err){
-    res.status(500).send(err);
+    const characters = await User.find();
+    res.json(characters);
+  } catch (e) {
+    res.status(500).send(e);
   }
 });
 
-app.put('/books/:bookID', async(req, res) => {
-  let bookId = req.params.bookID;
-  
-  if (!bookId) {
-    res.status(400).send('Please provide a valid Book Id');
-    return;
-  }
-  console.log('Updating (via PUT) book of id: ' + bookId);
-
+// Update a Character
+app.patch('/character/:userEmail', async (req, res) => {
+  const { userEmail } = req.params;
+  // console.log('userEmail: ' + userEmail);
   try {
-    await BookModel.replaceOne({ _id: bookId, userEmail: req.user.email }, req.body);
-    let newBook = await BookModel.findOne({ _id: bookId });
-    res.status(200).json(newBook);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-
-
-});
-
-
-app.delete('/books/:bookID', async (req, res) => {
-  let bookId = req.params.bookID;
-  if (!bookId) {
-    res.status(400).send('Please provide a valid Book Id');
-    return;
-  }
-  console.log('deleting book of id: ' + bookId);
-  try {
-    let result = await BookModel.findOneAndDelete({ _id: bookId, userEmail: req.user.email });
-
-    if (!result) {
-      res.status(404).send('Book ID not found.');
-      return;
-    }
-    console.log('Successfully deleted book with id: ' + bookId);
-    res.status(202).send('Successfully deleted book.');
-
-  } catch (err) {
-    if (err.name === 'CastError') {
-      res.status(400).send('Invalid book ID format');
+  console.log('trying...');
+    // Use the $push operator to append new characters to the existing array.
+    const updatedUser = await User.findOneAndUpdate(
+      { userEmail },
+      { $push: { characters: { $each: req.body.characters } } },
+      { new: true }
+    );
+    console.log('updatedUser: ', updatedUser)
+    if (updatedUser) {
+      res.status(200).json(updatedUser);
     } else {
-      res.status(500).send('Internal Server Error, log as follows: ', err);
+      res.status(404).send("User with that email address not found");
     }
+  } catch (e) {
+    res.status(500).send(e);
   }
 });
 
+// Delete a Character
+app.delete('/character/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedCharacter = await User.findByIdAndDelete(id);
+    if (deletedCharacter) {
+      res.status(200).json(deletedCharacter);
+    } else {
+      res.status(404).send("Character not found");
+    }
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 
-app.listen(PORT, () => console.log(`app v0.1 listening on ${PORT}`));
