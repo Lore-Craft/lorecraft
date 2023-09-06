@@ -12,7 +12,9 @@ const User = require('./UserModel');
 app.use(cors());
 app.use(express.json());
 
-
+// nosql stuff
+const MongoURL = 'mongodb://localhost:27017';
+const dbName = 'minecraft_db';
 
 
 // Create a new Character
