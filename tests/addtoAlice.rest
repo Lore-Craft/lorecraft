@@ -1,0 +1,19 @@
+## Retrieve all characters
+GET http://localhost:3001/character
+#############################################################
+
+PATCH http://localhost:3001/character/alice@example.com
+Content-Type: application/json
+
+{
+  "characters": {
+    "$push": {
+      "charName": "AliceChar2",
+      "classType": "Warrior",
+      "alignment": "Lawful Good",
+      "gender": "Female",
+      "imageURL": "https://example.com/alice2.jpg",
+      "backstory": "Joined a knight's order..."
+    }
+  }
+}
