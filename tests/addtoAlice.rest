@@ -5,22 +5,11 @@ GET http://localhost:3001/character
 PATCH http://localhost:3001/character/alice@example.com
 Content-Type: application/json
 {
-  "characters": [
-    {
-      "charName": "NewCharacter1",
-      "classType": "Warrior",
-      "alignment": "Lawful Good",
-      "gender": "Male",
-      "imageURL": "character1.jpg",
-      "backstory": "A brave warrior on a quest."
-    },
-    {
-      "charName": "NewCharacter2",
-      "classType": "Mage",
-      "alignment": "Chaotic Neutral",
-      "gender": "Female",
-      "imageURL": "character2.jpg",
-      "backstory": "A mysterious mage with hidden powers."
-    }
-  ]
+  "charName": "NewCharacter1",
+  "classType": "Warrior",
+  "alignment": "Lawful Good",
+  "gender": "Male",
+  "imageURL": "character1.jpg",
+  "backstory": "A brave warrior on a quest.",
+  "userEmail": "alice@example.com"
 }

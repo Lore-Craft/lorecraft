@@ -8,7 +8,7 @@ const PORT = process.env.PORT;
 const MONGODB_URL = process.env.MONGODB_URL;
 
 const mongoose = require('mongoose');
-const User = require('./UserModel');
+const Character = require('./CharacterModel');
 
 app.use(cors());
 app.use(express.json());
@@ -18,9 +18,9 @@ mongoose.connect(MONGODB_URL);
 
 // Create a new Character
 app.post('/character', async (req, res) => {
-  // console.log('creating new character: ', req.body)
   try {
-    const newCharacter = new User(req.body);
+    const characterData = req.body;
+    const newCharacter = new Character(characterData);
     const savedCharacter = await newCharacter.save();
     res.status(201).json(savedCharacter);
   } catch (e) {
@@ -29,12 +29,13 @@ app.post('/character', async (req, res) => {
   }
 });
 
+
 // Read all Characters
 app.get('/character', async (req, res) => {
   // console.log('getting list of characters.')
   try {
     // console.log('querying')
-    const characters = await User.find({});
+    const characters = await Character.find({});
     // console.log('result: ', characters)
     res.json(characters);
   } catch (e) {
@@ -45,37 +46,32 @@ app.get('/character', async (req, res) => {
 // Update a Character
 app.patch('/character/:userEmail', async (req, res) => {
   const { userEmail } = req.params;
-  // console.log('userEmail: ' + userEmail);
-  console.log('userEmail', userEmail);
+  console.log('about to change userEmail: ', userEmail);
   try {
-    const incomingCharacters = req.body.characters; // Assuming the incoming JSON has a "characters" property
-
-    // Find the user by userEmail
-    const user = await User.findOne({ userEmail });
-
-    if (!user) {
-      return res.status(404).send("User with that email address not found");
+    const characterData = req.body;
+    characterData.userEmail = userEmail; // Include the user's email
+    const newCharacter = new Character(characterData);
+    const updatedUser = await User.findOneAndUpdate(
+      { userEmail },
+      { $push: { characters: newCharacter } },
+      { new: true }
+    );
+    if (updatedUser) {
+      res.status(200).json(updatedUser);
+    } else {
+      res.status(404).send("User with that email address not found");
     }
-
-    // Append the incoming characters to the user's characters array
-    user.characters.push(...incomingCharacters);
-
-    // Save the updated user document
-    const updatedUser = await user.save();
-
-    console.log('updatedUser: ', updatedUser);
-    res.status(200).json(updatedUser);
   } catch (e) {
-    console.error('Error:', e);
     res.status(500).send(e);
   }
 });
+
 
 // Delete a Character
 app.delete('/character/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedCharacter = await User.findByIdAndDelete(id);
+    const deletedCharacter = await Character.findByIdAndDelete(id);
     if (deletedCharacter) {
       res.status(200).json(deletedCharacter);
     } else {
