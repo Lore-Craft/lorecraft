@@ -6,7 +6,7 @@ const app = express();
 const port = 3001;
 
 // const MongoURL = 'mongodb://localhost:27017';
-const MongoURL = 'mongodb+srv://sugaraspa:Hhf0ogFkZGWZEGgB@cluster0.wlju2vn.mongodb.net/?retryWrites=true&w=majority';
+const MongoURL = 'mongodb+srv://<username:password>@cluster0.wlju2vn.mongodb.net/?retryWrites=true&w=majority';
 const dbName = 'minecraft_db';
 const fullMongoURL = `${MongoURL}/${dbName}`;
 

@@ -1,5 +1,5 @@
 ## Retrieve all characters
-GET http://localhost:3001/character
+GET https://lorecraft.onrender.com/character
 #############################################################
 
 PATCH http://localhost:3001/character/alice@example.com
