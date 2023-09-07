@@ -2,14 +2,39 @@
 GET https://lorecraft.onrender.com/character
 #############################################################
 
-PATCH http://localhost:3001/character/alice@example.com
+
+## Retrieve Alice's characters
+GET http://localhost:3001/character/alice@example.com
+#############################################################
+## Retrieve Alice's characters
+GET http://localhost:3001/character/asds
+#############################################################
+
+POST http://localhost:3001/character
 Content-Type: application/json
+
 {
-  "charName": "NewCharacter1",
-  "classType": "Warrior",
-  "alignment": "Lawful Good",
-  "gender": "Male",
-  "imageURL": "character1.jpg",
-  "backstory": "A brave warrior on a quest.",
-  "userEmail": "alice@example.com"
+  "userEmail": "alice@example.com",
+  "charName": "AliceChar5",
+  "classType": "Wizard",
+  "alignment": "Lawful Evil",
+  "gender": "Female",
+  "imageURL": "https://example.com/alice3.jpg",
+  "backstory": "A wise and powerful wizard."
 }
+#############################################################
+
+POST http://localhost:3001/character
+Content-Type: application/json
+
+{
+  "userEmail": "alice@example.com",
+  "charName": "AliceChar4",
+  "classType": "Rogue",
+  "alignment": "Chaotic Neutral",
+  "gender": "Male",
+  "imageURL": "https://example.com/alice4.jpg",
+  "backstory": "A sly rogue with a mysterious past."
+}
+#############################################################
+DELETE http://localhost:3001/character/64f903026df719f7874faf3b

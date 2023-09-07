@@ -1,5 +1,5 @@
 ## Retrieve all characters
-GET http://localhost:3001/character
+GET http://localhost:3001/character/alice@example.com
 #############################################################
 
 ### Alice
