@@ -6,7 +6,7 @@ const app = express();
 const port = 3001;
 
 // const MongoURL = 'mongodb://localhost:27017';
-const MongoURL = 'mongodb+srv://<username:password>@cluster0.wlju2vn.mongodb.net/?retryWrites=true&w=majority';
+const MongoURL = '.env';
 const dbName = 'minecraft_db';
 const fullMongoURL = `${MongoURL}/${dbName}`;
 
@@ -29,7 +29,7 @@ app.get('/character', async (req, res) => {
     res.json(users);
   } catch (err) {
     console.error('Error fetching users:', err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send('Whoa! Internal Server Error, check console logs');
   }
 });
 
