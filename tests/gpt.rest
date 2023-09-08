@@ -1,0 +1,22 @@
+POST http://localhost:3001/generate-backstory
+Content-Type: application/json
+
+{
+  "name": "Arya",
+  "gender": "female",
+  "race": "human",
+  "charClass": "rogue",
+  "alignment": "neutral"
+}
+
+###
+POST http://localhost:3001/generate-backstory
+Content-Type: application/json
+
+{
+  "name": "Joe",
+  "gender": "female",
+  "race": "halfling",
+  "charClass": "monk",
+  "alignment": "evil"
+}
