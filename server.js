@@ -34,7 +34,7 @@ app.post('/character', async (req, res) => {
 app.get('/character/:userEmail', async (req, res) => {
   // console.log('getting list of characters.')
   const { userEmail } = req.params;
-  console.log('Yup, its working!');
+  // console.log('Yup, its working!');
   try {
     const characters = await Character.find({ userEmail});
     res.json(characters);
@@ -91,5 +91,5 @@ app.delete('/character/:id', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Lorecraft Server v 0.3 (now with auth!) is running on port ${PORT}`);
+  console.log(`Lorecraft Server v 0.3.1 is running on port ${PORT}`);
 });
