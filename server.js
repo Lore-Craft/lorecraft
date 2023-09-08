@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const authorize = require('./auth/authorize.js');
 
 const PORT = process.env.PORT;
 const MONGODB_URL = process.env.MONGODB_URL;
@@ -12,11 +13,11 @@ const Character = require('./CharacterModel');
 
 app.use(cors());
 app.use(express.json());
-// app.use(authorize);
+app.use(authorize);
 
 mongoose.connect(MONGODB_URL);
 
-// Create a new Character
+
 app.post('/character', async (req, res) => {
   try {
     const characterData = req.body;
@@ -30,10 +31,10 @@ app.post('/character', async (req, res) => {
 });
 
 
-// Read all Characters
 app.get('/character/:userEmail', async (req, res) => {
   // console.log('getting list of characters.')
   const { userEmail } = req.params;
+  console.log('Yup, its working!');
   try {
     const characters = await Character.find({ userEmail});
     res.json(characters);
@@ -52,28 +53,24 @@ app.get('/character', async (req, res) => {
   }
 });
 
+
 // Update a Character
-app.patch('/character/:userEmail', async (req, res) => {
-  res.status(500).send('PATCH no longer supported');
-  // const { userEmail } = req.params;
-  // console.log('about to change userEmail: ', userEmail);
-  // try {
-  //   const characterData = req.body;
-  //   characterData.userEmail = userEmail; // Include the user's email
-  //   const newCharacter = new Character(characterData);
-  //   const updatedUser = await User.findOneAndUpdate(
-  //     { userEmail },
-  //     { $push: { characters: newCharacter } },
-  //     { new: true }
-  //   );
-  //   if (updatedUser) {
-  //     res.status(200).json(updatedUser);
-  //   } else {
-  //     res.status(404).send("User with that email address not found");
-  //   }
-  // } catch (e) {
-  //   res.status(500).send(e);
-  // }
+app.patch('/character/:id', async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const updatedCharacter = await CharacterModel.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (updatedCharacter) {
+      res.status(200).json(updatedCharacter);
+    } else {
+      res.status(404).send("Character not found");
+    }
+  } catch (e) {
+    // Handle any errors
+    console.error(e);
+    res.status(500).send(e);
+  }
 });
 
 
@@ -94,5 +91,5 @@ app.delete('/character/:id', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Lorecraft Server v 0.2 is running on port ${PORT}`);
+  console.log(`Lorecraft Server v 0.3 (now with auth!) is running on port ${PORT}`);
 });
