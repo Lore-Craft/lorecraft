@@ -6,7 +6,7 @@ const jwksClient = require('jwks-rsa'); // auth
 // When a user is validated, request.user will contain their information
 // Otherwise, this will force an error
 function verifyUser(request, response, next) {
-  console.log('request headers: ', request.headers);
+  // console.log('request headers: ', request.headers);
   function valid(err, user) {
     request.user = user;
     next();
@@ -16,6 +16,7 @@ function verifyUser(request, response, next) {
     const token = request.headers.authorization.split(' ')[1];
     jwt.verify(token, getKey, {}, valid);
   } catch (error) {
+    console.log('error: ', error)
     next('Not Authorized');
   }
 }
