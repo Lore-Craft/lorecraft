@@ -12,8 +12,11 @@ function verifyUser(request, response, next) {
     next();
   }
 
+  console.log(`checking for token!`, request.headers);
+
   try {
     const token = request.headers.authorization.split(' ')[1];
+    console.log('token: ', token);
     jwt.verify(token, getKey, {}, valid);
   } catch (error) {
     console.log('error: ', error)

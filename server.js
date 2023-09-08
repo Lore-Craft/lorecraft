@@ -91,5 +91,5 @@ app.delete('/character/:id', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Lorecraft Server v 0.3 is running on port ${PORT}`);
+  console.log(`Lorecraft Server v 0.3 (now with auth!) is running on port ${PORT}`);
 });
